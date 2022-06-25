@@ -1,0 +1,58 @@
+/** Diving back with the table of exercise logs, we have now added a few more rows of values, as well as, attatching a new table of Dr. reocommended exercises. Now we
+will experiment filtering from these logs using the 'IN' and 'Like' operators. This example below will also utilize subqueries from the second table. **/
+
+CREATE TABLE exercise_logs
+    (id INTEGER PRIMARY KEY AUTOINCREMENT,
+    type TEXT,
+    minutes INTEGER, 
+    calories INTEGER,
+    heart_rate INTEGER);
+
+INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES ("biking", 30, 100, 110);
+INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES ("biking", 10, 30, 105);
+INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES ("dancing", 15, 200, 120);
+INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES ("tree climbing", 30, 70, 90);
+INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES ("tree climbing", 25, 72, 80);
+INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES ("rowing", 30, 70, 90);
+INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES ("hiking", 60, 80, 85);
+
+--If from our list we were tasked with finding a list of extracurricular activities, since it is now Summer, and we wanted to find all of the outdoor activities we  
+we can use the 'Or' operator from our previous example in Tracker #1. From our values for the table above, they would be listed like below.
+
+SELECT * FROM exercise_logs WHERE type = "biking" OR type = "hiking" OR type = "tree climbing" OR type = "rowing";
+
+/* IN */
+--As SQL can simplify the above query further, we use the 'IN' operator here to check to see if a particular value is in a list of values, and make it easier to read.
+
+SELECT * FROM exercise_logs WHERE type IN ("biking", "hiking", "tree climbing", "rowing");
+
+CREATE TABLE drs_favorites
+    (id INTEGER PRIMARY KEY,
+    type TEXT,
+    reason TEXT);
+
+INSERT INTO drs_favorites(type, reason) VALUES ("biking", "Improves endurance and flexibility.");
+INSERT INTO drs_favorites(type, reason) VALUES ("hiking", "Increases cardiovascular health.");
+
+SELECT type FROM drs_favorites;
+
+/* SUBQUERIES */
+--To find out more of what 'In' can do in SQL, we will now use the above new table that has similar but different values for making this next exercise to check 
+if any of the exercise logs matches with the doctor recommended activities in a subquery?
+
+SELECT * FROM exercise_logs WHERE type IN ("biking", "hiking");
+SELECT * FROM exercise_logs WHERE type IN (SELECT type FROM drs_favorites);
+
+--The above query is crafted that besides seeing that biking and hiking are the recommended activities, this subquery would reflect if the table were to ever change 
+and be out of date. This will make it so that our query will always pull based on whatever's in the doctor's table at the time of editing it.
+    
+SELECT * FROM exercise_logs WHERE type IN (
+    SELECT type FROM drs_favorites WHERE reason = "Increases cardiovascular health");
+    
+/* LIKE */
+--The 'Like' operator in relations to the 'In' operator is used in our query examples to not have to be so specific in an exact match when filtering out data. So that
+there are times when we want to do an inexact match. Final note, the % on both sides in this example helps act as a wildcard for any spellings or symbols differently
+used to match any rows which contains the word cardiovascular anywhere. 
+
+SELECT * FROM exercise_logs WHERE type IN (
+    SELECT type FROM drs_favorites WHERE reason LIKE "%cardiovascular%");
