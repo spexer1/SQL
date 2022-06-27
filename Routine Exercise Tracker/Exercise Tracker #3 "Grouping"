@@ -1,0 +1,51 @@
+/**We are continuing with more queries surrounding this exercise table. The assignment with these exercise logs for #3 is to see how many calories I would have 
+burned for each type of activity using aggregate queries, grouping operations like 'Having,' and the 'COUNT' function. **/ 
+
+CREATE TABLE exercise_logs
+    (id INTEGER PRIMARY KEY AUTOINCREMENT,
+    type TEXT,
+    minutes INTEGER, 
+    calories INTEGER,
+    heart_rate INTEGER);
+
+INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES ("biking", 30, 115, 110);
+INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES ("biking", 10, 45, 105);
+INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES ("dancing", 15, 200, 120);
+INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES ("dancing", 15, 165, 120);
+INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES ("tree climbing", 30, 70, 90);
+INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES ("tree climbing", 25, 72, 80);
+INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES ("rowing", 30, 70, 90);
+INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES ("hiking", 60, 80, 85);
+
+SELECT * FROM exercise_logs;
+
+/* AS */
+--We bring back aggregate functions like 'SUM(_)' in this lesson to total our activities by group from the calories burned for each type of activity grouped 
+together. What we see that is new in this query is now labeling our column a new way into a more specific and easier to read way with the 'As' operator,
+SELECT type, SUM(calories) AS total_calories FROM exercise_logs GROUP BY type;
+
+/* HAVING VS WHERE */
+--Our next query is to sort and filter only activities where calories burned were more than 150 calories total. To find the answer to this query one is introduced to
+the limiation of the 'Where' operator that has been regularly used for these lessons up to this point. For this query 'Where' filters each individual row that comes
+in individually not grouped as we have it in our query. What we wanted from this query is which exercise type or types have burned more than 150 calories across all 
+logs, 
+SELECT type, SUM(calories) AS total_calories FROM exercise_logs
+    GROUP BY type
+    HAVING total_calories > 150
+    ;
+/**With replacing the 'Where' operator to 'HAVING' we are applying the conditions of our query to the grouped values, not the individual values in individual rows.
+**/
+
+--What we sought in our next query example is finding the average calories for all the exercises where we burned more than seventy calories. 
+From this experiment I wanted to test out any amount we used would get different results with the `HAVING` operator.
+
+SELECT type, AVG(calories) AS avg_calories FROM exercise_logs
+    GROUP BY type
+    HAVING avg_calories > 70
+    ; 
+
+/* COUNT */
+--We wanted to lastly get accustomed to the 'COUNT' function, by which we set up our query to find where we logged at least two activities from the table of our 
+exercise logs. The 'Count' function is used here to return us the number of rows that matches a specified criterion. Which ended up finding "Biking," "Dancing", and 
+"Tree Climbing,"
+SELECT type FROM exercise_logs GROUP BY type HAVING COUNT(*) >= 2;
