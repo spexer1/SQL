@@ -66,8 +66,8 @@ SELECT title FROM songs where artist = "Queen";
 --Following this to make a 'Pop' playlist, we selected the name of all of the artists from the 'Pop' genre
 SELECT name FROM artists WHERE genre = "Pop";
 
---To finish up creating the 'Pop' playlist, the practice challeng was to make another query that will select the title of all the songs from the 'Pop' artists. 
-This would use the 'IN' operator on for a subquery.
+--To finish up creating the 'Pop' playlist, the practice challenge was to make another query that will select the title of all the songs from the 'Pop' artists. 
+This would use the 'IN' operator for a subquery.
 
 
 SELECT title FROM songs where artist IN ( SELECT name FROM artists WHERE genre = "Pop");
