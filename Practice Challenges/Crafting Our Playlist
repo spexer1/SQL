@@ -71,3 +71,4 @@ This would use the 'IN' operator on for a subquery.
 
 
 SELECT title FROM songs where artist IN ( SELECT name FROM artists WHERE genre = "Pop");
+
