@@ -1,4 +1,4 @@
-/** For this challenge the database below was created about a few popular authors and their books, with word counts for each book. The following queries will take 
+/** For this challenge, the database below was created about a few popular authors and their books, with word counts for each book. The following queries will take 
 after our understanding of group results and using the 'HAVING' function.**/
 
 CREATE TABLE books (
@@ -40,13 +40,13 @@ INSERT INTO books (author, title, words)
 INSERT INTO books (author, title, words)
     VALUES ("J.R.R. Tolkien", "Return of the King", 134462);
  
- --The first step we are goingn to do is select all the authors who have written more than 1 million words, using 'GROUP BY,' 'HAVING,' and using the aggregate query
+ --The first step we are going to do is select all the authors who have written more than 1 million words, using 'GROUP BY,' 'HAVING,' and using the aggregate query
  SUM(),
  
 SELECT author, SUM(words) AS total_words FROM "books" GROUP BY author Having total_words >= 1000000;
 
 --We found that the author J.K. Rowling was the only one that fit the above query. Now if we were to try to find the authors who wrote more than an average of 
-150,000 words per book from our table, this would again have us using 'GROUP BY,' 'HAVING,' and now the AVG() function,
+150,000 words per book from our table. This would again have us using 'GROUP BY,' 'HAVING,' and now the AVG() function,
 
 SELECT author, AVG(words) AS avg_words FROM books GROUP BY author HAVING avg_words >=150000;
 
