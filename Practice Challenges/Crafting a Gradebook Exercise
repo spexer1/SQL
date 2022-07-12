@@ -1,0 +1,47 @@
+/** This particular exercise is something more challenging as this time we've created a database in order to track student grades, with their name, number grade, 
+and what percent of activities they've completed. The steps for this challenge will reflect our current understaning of the 'CASE' function **/
+
+
+CREATE TABLE student_grades (
+    id integer PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    number_grade INTEGER,
+    fraction_completed REAL);
+    
+INSERT INTO student_grades (name, number_grade, fraction_completed)
+    VALUES ("Winston", 90, 0.805);
+INSERT INTO student_grades (name, number_grade, fraction_completed)
+    VALUES ("Winnefer", 95, 0.901);
+INSERT INTO student_grades (name, number_grade, fraction_completed)
+    VALUES ("Winsteen", 85, 0.906);
+INSERT INTO student_grades (name, number_grade, fraction_completed)
+    VALUES ("Wincifer", 66, 0.7054);
+INSERT INTO student_grades (name, number_grade, fraction_completed)
+    VALUES ("Winster", 76, 0.5013);
+INSERT INTO student_grades (name, number_grade, fraction_completed)
+    VALUES ("Winstonia", 82, 0.9045);
+
+
+--The first of our queries is to start by selecting all of the rows, and display the name, number_grade, and percent_completed. The last displayed name will be done 
+from changing the fraction__completed column by converting the entries to whole numbers through multiplication.
+
+SELECT name, number_grade, ROUND(fraction_completed * 100) AS percent_completed 
+ FROM student_grades; 
+
+--Now our final query will be converting our above table to show how many students have earned which letter_grade. As you will see below this can be done by using 
+CASE with the number_grade column and changing the displayed name to lettr_grade, and outputting 
+'A' for grades > 90, 
+'B' for grades > 80, 
+'C' for grades > 70, 
+and 'F' otherwise. 
+
+/**CASE**/ 
+SELECT COUNT(*),
+    CASE
+        WHEN number_grade > 90 THEN "A"
+        WHEN number_grade > 80 THEN "B"
+        WHEN number_grade > 70 THEN "C"
+        ELSE "F"
+    END AS "letter_grade"
+FROM student_grades
+GROUP BY letter_grade
