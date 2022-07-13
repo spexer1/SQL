@@ -31,8 +31,8 @@ in individually not grouped as we have it in our query. What we wanted from this
 logs, 
 SELECT type, SUM(calories) AS total_calories FROM exercise_logs
     GROUP BY type
-    HAVING total_calories > 150
-    ;
+    HAVING total_calories > 150;
+    
 /**With replacing the 'Where' operator to 'HAVING' we are applying the conditions of our query to the grouped values, not the individual values in individual rows.
 **/
 
@@ -41,11 +41,12 @@ From this experiment I wanted to test out any amount we used would get different
 
 SELECT type, AVG(calories) AS avg_calories FROM exercise_logs
     GROUP BY type
-    HAVING avg_calories > 70
-    ; 
+    HAVING avg_calories > 70;
+    
 
 /* COUNT */
 --We wanted to lastly get accustomed to the 'COUNT' function, by which we set up our query to find where we logged at least two activities from the table of our 
 exercise logs. The 'Count' function is used here to return us the number of rows that matches a specified criterion. Which ended up finding "Biking," "Dancing", and 
 "Tree Climbing,"
 SELECT type FROM exercise_logs GROUP BY type HAVING COUNT(*) >= 2;
+
