@@ -29,6 +29,7 @@ SELECT type, SUM(calories) AS total_calories FROM exercise_logs GROUP BY type;
 the limiation of the 'Where' operator that has been regularly used for these lessons up to this point. For this query 'Where' filters each individual row that comes
 in individually not grouped as we have it in our query. What we wanted from this query is which exercise type or types have burned more than 150 calories across all 
 logs, 
+
 SELECT type, SUM(calories) AS total_calories FROM exercise_logs
     GROUP BY type
     HAVING total_calories > 150;
