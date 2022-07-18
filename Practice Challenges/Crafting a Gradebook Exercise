@@ -1,5 +1,5 @@
 /** This particular exercise is something more challenging as this time we've created a database in order to track student grades, with their name, number grade, 
-and what percent of activities they've completed. The steps for this challenge will reflect our current understaning of the 'CASE' function **/
+and what percent of activities they've completed. The steps for this challenge will reflect our current understaning of the 'CASE' function. **/
 
 
 CREATE TABLE student_grades (
@@ -23,17 +23,17 @@ INSERT INTO student_grades (name, number_grade, fraction_completed)
 
 
 --The first of our queries is to start by selecting all of the rows, and display the name, number_grade, and percent_completed. The last displayed name will be done 
-from changing the fraction__completed column by converting the entries to whole numbers through multiplication.
+from changing the fraction__completed column by converting the entries to whole numbers through multiplication,
 
 SELECT name, number_grade, ROUND(fraction_completed * 100) AS percent_completed 
  FROM student_grades; 
 
 --Now our final query will be converting our above table to show how many students have earned which letter_grade. As you will see below this can be done by using 
-CASE with the number_grade column and changing the displayed name to lettr_grade, and outputting 
+'CASE' with the number_grade column and changing the displayed name to lettr_grade, and outputting 
 'A' for grades > 90, 
 'B' for grades > 80, 
 'C' for grades > 70, 
-and 'F' otherwise. 
+and 'F' otherwise, 
 
 /**CASE**/ 
 SELECT COUNT(*),
