@@ -1,0 +1,65 @@
+/**An aspect that we have not had so much to use in our exercises is the heart_rate column of our table. For this exercise we will be using more advanced SQL features
+like the ‘CASE’ function in our coding. **/ 
+
+CREATE TABLE exercise_logs
+    (id INTEGER PRIMARY KEY AUTOINCREMENT,
+    type TEXT,
+    minutes INTEGER, 
+    calories INTEGER,
+    heart_rate INTEGER);
+
+INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES ("biking", 30, 100, 110);
+INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES ("biking", 10, 30, 105);
+INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES ("dancing", 15, 200, 120);
+INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES ("dancing", 15, 165, 120);
+INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES ("tree climbing", 30, 70, 90);
+INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES ("tree climbing", 25, 72, 80);
+INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES ("rowing", 30, 70, 90);
+INSERT INTO exercise_logs(type, minutes, calories, heart_rate) VALUES ("hiking", 60, 80, 85);
+
+SELECT * FROM exercise_logs;
+
+/* Using COUNT again */
+--We can start our queries with one’s maximum heart rate (which is 220 minus your age.) We can try selecting from these logs to see if my heart rate has ever gone 
+above max by again using the 'COUNT' function, as well as using math equation operators,
+SELECT COUNT(*) FROM exercise_logs WHERE heart_rate > 220 - 26;
+
+/* 50-90% of max/ROUND */
+--We found from the above query that I never reached above my max heart rate, so we can try now seeing if my heart gets into the target heart rate zone from these 
+activities. How we can know if we make it into the range is if it falls between 50 to 90 percent of max whatever our rate would be. This overall query reflects a 
+combination of a few math operators, along with using the ‘ROUND’ function to round a number to a specified number of decimal places if need be,
+
+SELECT COUNT(*) FROM exercise_logs WHERE
+    heart_rate >= ROUND(0.50 * (220-26)) 
+    AND  heart_rate <= ROUND(0.90 * (220-26));
+
+--What we found in the above query is that we have 4 logs that fall in that target zone, though that begs the question what about the other logs we have left out in 
+this query? What zones are they in, and where do these activities we have listed fit in our range?
+    
+/* CASE */
+--The introduction of our 'Case' query also establishes the limitation of the 'Group by' function. We would like to see a summary of all the logs and how many were 
+in each of the heart rate zones, and as our tables do not have specific columns for heart rate zones to group by we have to instead create a column, using a `CASE`
+statement, 
+
+SELECT type, heart_rate,
+    CASE 
+        WHEN heart_rate > 220-30 THEN "above max"
+        WHEN heart_rate > ROUND(0.90 * (220-26)) THEN "above target"
+        WHEN heart_rate > ROUND(0.50 * (220-26)) THEN "within target"
+        ELSE "below target"
+    END as "hr_zone"
+FROM exercise_logs;
+
+--With a new column having a description of the zones each are in now, we can now have an easy time to make a query that summarizes how many of my logs are in each 
+of the zones. This step just takes copying the previous query, and are now able to `GROUP BY` the new column that was created,
+
+SELECT COUNT(*),
+    CASE 
+        WHEN heart_rate > 220-26 THEN "above max"
+        WHEN heart_rate > ROUND(0.90 * (220-26)) THEN "above target"
+        WHEN heart_rate > ROUND(0.50 * (220-26)) THEN "within target"
+        ELSE "below target"
+    END as "hr_zone"
+FROM exercise_logs
+GROUP BY hr_zone;
+
