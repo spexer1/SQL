@@ -1,4 +1,5 @@
-# For this project, I downloaded this Pokemon dataset and used advanced SELECT queries to discover things about the data that I found would be interesting to know.
+# For this project, I downloaded this Pokemon dataset and used advanced SELECT queries that I have learned so far to discover things about the data that I found 
+would be interesting to know.
 
 CREATE TABLE pokemon(
   Number     INTEGER,
