@@ -1,3 +1,7 @@
+/** Moving along after our exercies table queries, we now have set up two tables in this database `students' table, with detailed information about each student, 
+like their name and email. The second one is the `student_grades` table, which has their student ID, test name, and grade. These two tables will be used for 
+practicing examples of the 'JOIN' functions in SQL. **/
+
 CREATE TABLE students (id INTEGER PRIMARY KEY,
     first_name TEXT,
     last_name TEXT,
@@ -24,19 +28,32 @@ INSERT INTO student_grades (student_id, test, grade)
 INSERT INTO student_grades (student_id, test, grade)
     VALUES (2, "Chemistry", 95);
     
+--We first tried to select everything from `student_grades` to show us the values listed out. Because we want to have included the student names, emails, and that 
+sorted into a sing table, we will be connecting these two tables together through various techniques, 
 SELECT * FROM student_grades;
 
+--So because both tables have a related value (the ID for the students) we can form a query that will output the student name and email next to each test grade 
+even with two different tables. We can do this in a number of ways in SQL,
+
 /* cross join */
+--A simple way of doing this is a 'CROSS JOIN' query. We see here that by putting both table names after the 'FROM' we will get a lot of rows, rows that are 
+created and connected to the other whether the information is connected or not. This is sadly not helpful since we want the information related and clear to read,
 SELECT * FROM student_grades, students;
 
 /* implicit inner join */
+--Since we want to only see the student ID matching we can create a 'INNER JOIN' query. First we can test out using the implicit version, where we can build off the
+last query by adding `WHERE`. This will check to see that the student_ID matches `students` to `ID`, and limit the table to just the rows where the columns were the 
+same,
 SELECT * FROM student_grades, students
     WHERE student_grades.student_id = students.id;
     
 /* explicit inner join - JOIN */
+--Our final example for this exercise will be using the 'EXPLICIT INNER JOIN' query to match these tables. This query will whittle down the columns to just outputting
+the names, the email, the test name, and the grade of the students. This query also shows that we can still use other tools like 'WHERE' or 'GROUP BY' when crafting 
+a similar query. The last aspect this query helps introduce is how we can prefix our columns in SQL with the table name that they're from by using a ".",
+
 SELECT students.first_name, students.last_name, students.email, student_grades.test, student_grades.grade FROM students
     JOIN student_grades
     ON students.id = student_grades.student_id
     WHERE grade > 90;
-    
-    
+        
