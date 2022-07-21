@@ -1,0 +1,77 @@
+/** For this lesson we are still centering on 'JOINs', in which we center back with the related tables about ‘students’ and the 'student_grades', with the added 
+inclusion of another table that would keep track of what projects students are working on. These three tables are still connected by the `student_id` column that 
+each possesses. With this included third table we would most likely want to see a list of student names and the projects they're currently working on. This in SQL 
+would be done by needing to ‘INNER JOIN’ the `student_projects` with `students,` along with presenting other types of JOINS for displaying their differences. **/
+
+CREATE TABLE students (id INTEGER PRIMARY KEY,
+    first_name TEXT,
+    last_name TEXT,
+    email TEXT,
+    phone TEXT,
+    birthdate TEXT);
+
+INSERT INTO students (first_name, last_name, email, phone, birthdate)
+    VALUES ("Peter", "Rabbit", "peter@rabbit.com", "555-6666", "2002-06-24");
+INSERT INTO students (first_name, last_name, email, phone, birthdate)
+    VALUES ("Alice", "Wonderland", "alice@wonderland.com", "555-4444", "2002-07-04");
+    
+CREATE TABLE student_grades (id INTEGER PRIMARY KEY,
+    student_id INTEGER,
+    test TEXT,
+    grade INTEGER);
+
+INSERT INTO student_grades (student_id, test, grade)
+    VALUES (1, "Nutrition", 95);
+INSERT INTO student_grades (student_id, test, grade)
+    VALUES (2, "Nutrition", 92);
+INSERT INTO student_grades (student_id, test, grade)
+    VALUES (1, "Chemistry", 85);
+INSERT INTO student_grades (student_id, test, grade)
+    VALUES (2, "Chemistry", 95);
+
+CREATE TABLE student_projects (id INTEGER PRIMARY KEY,
+    student_id INTEGER,
+    title TEXT);
+    
+INSERT INTO student_projects (student_id, title)
+    VALUES (1, "Carrotapault");
+   
+/* outer join */ 
+--For the query we desire we will be selecting the values we want from both of these tables and match those results, 
+SELECT students.first_name, students.last_name, student_projects.title
+    FROM students
+    JOIN student_projects
+    ON students.id = student_projects.student_id;
+
+--The results of this show that Peter is the only one listed to have a project and meets all the requirements. Now, if we would not solely want to see the students 
+from our table that have a project, but to include all of the students (for this example the other student being Alice) into a presentable table we would have to put
+a different query,
+
+/* left outer join */
+--An `INNER JOIN` only creates rows if there are matching records in the two tables. Since there is no row for Alice in student_projects we would have to make an 
+'OUTER JOIN' query. We can replicate the same query as before but add `LEFT OUTER JOIN` instead, 
+SELECT students.first_name, students.last_name, student_projects.title
+    FROM students
+    LEFT OUTER JOIN student_projects
+    ON students.id = student_projects.student_id;
+
+--The result from this query will have Alice included now, but there will be a `NULL` for the project title in the table. What the 'LEFT OUTER JOIN' does here is that
+the `LEFT` tells SQL that it should make sure to retain every row from the left table, which is the one after the `FROM`, `students`. The `OUTER` tells it that it 
+should retain the row even if there's no match in the right table, which is `student_projects`,
+
+/* right outer join */
+--For the sake of including the other types of JOINS, there also exists the opposite of the 'LEFT' join which is the 'RIGHT OUTER JOIN.' It basically does the 
+opposite, in making sure that it keeps everything from the 'RGHT' and then 'JOINS' with the left,  
+SELECT students.first_name, students.last_name, student_projects.title
+    FROM students
+    RIGHT OUTER JOIN student_projects
+    ON students.id = student_projects.student_id;
+
+/* full outer join */
+--Finally, there is the `FULL OUTER JOIN`, which would make a table that matches rows, if it can, on both the left and the right side, and fills in `NULL`s when it 
+can't on either side,
+SELECT students.first_name, students.last_name, student_projects.title
+    FROM students
+    FULL OUTER JOIN student_projects
+    ON students.id = student_projects.student_id;
+
