@@ -1,5 +1,5 @@
-/** Moving along after our exercies table queries, we now have set up two tables in this database `students' table, with detailed information about each student, 
-like their name and email. The second one is the `student_grades` table, which has their student ID, test name, and grade. These two tables will be used for 
+/** Moving along after our exercies table queries, we now have set up two tables in this database, the `students` table with detailed information about each student, 
+like their name and email, and a second one for `student_grades`, which has their student ID, test name, and grade. These two tables will be used for 
 practicing examples of the 'JOIN' functions in SQL. **/
 
 CREATE TABLE students (id INTEGER PRIMARY KEY,
