@@ -1,0 +1,42 @@
+/**This training exercise is instilling our understanding of the 'LEFT OUTER JOIN' function in SQL. We are going to center on a scenario of managing a dataset for a 
+restaurant’s orders or say a hotel food chain that collects data for recurring guests at their establishment.**/ 
+
+CREATE TABLE customers (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT,
+    email TEXT);
+    
+INSERT INTO customers (name, email) VALUES ("Doctor Who", "doctorwho@timelords.com");
+INSERT INTO customers (name, email) VALUES ("Harry Potter", "harry@potter.com");
+INSERT INTO customers (name, email) VALUES ("Captain Awesome", "captain@awesome.com");
+
+CREATE TABLE orders (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    customer_id INTEGER,
+    item TEXT,
+    price REAL);
+
+INSERT INTO orders (customer_id, item, price)
+    VALUES (1, "Sonic Screwdriver", 1000.00);
+INSERT INTO orders (customer_id, item, price)
+    VALUES (2, "High Quality Broomstick", 40.00);
+INSERT INTO orders (customer_id, item, price)
+    VALUES (1, "TARDIS", 1000000.00);
+
+--To emulate this scenario the database for 'customers' and their 'orders' are listed out. We are able to see from our data that not all of the customers have made 
+orders. We would like to make a query that would list the name and email of every customer followed by the item and price of orders they've made,
+SELECT customers.name, customers.email, orders.item, orders.price
+from customers
+LEFT OUTER JOIN orders
+ON customers.id = orders.customer_id;
+
+--We managed to find from this query the listing of every name of our customers regardless if they fully fill out every slot,
+
+--For our last query, we will create another query that will output fully in one row per each customer, their name, email, and “total amount” of money they've spent 
+on orders. This query will be sorted by rows according to the total money spent, from the most spent to the least spent to keep track of invested clients/customers,
+SELECT customers.name, customers.email, SUM(orders.price) as "total amount"
+from customers
+LEFT OUTER JOIN orders
+ON customers.id = orders.customer_id
+GROUP BY customers.id order by orders.price DESC;
+
