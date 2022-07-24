@@ -1,0 +1,50 @@
+/** Today we are back to focusing on our student tables, with the twist that there is just the table ‘students,’ with a new column for a ‘buddy_id’. The students are 
+now placed with a buddy system of someone in their class to pair with. The aspect we will be focusing for today will be ‘SELF JOINS’ with the ‘students’ table. **/ 
+
+CREATE TABLE students (id INTEGER PRIMARY KEY AUTOINCREMENT,
+    first_name TEXT,
+    last_name TEXT,
+    email TEXT,
+    phone TEXT,
+    birthdate TEXT,
+    buddy_id INTEGER);
+
+INSERT INTO students 
+    VALUES (1, "Peter", "Rabbit", "peter@rabbit.com", "555-6666", "2002-06-24", 2);
+INSERT INTO students 
+    VALUES (2, "Alice", "Wonderland", "alice@wonderland.com", "555-4444", "2002-07-04", 1);
+INSERT INTO students 
+    VALUES (3, "Aladdin", "Lampland", "aladdin@lampland.com", "555-3333", "2001-05-10", 4);
+INSERT INTO students 
+    VALUES (4, "Simba", "Kingston", "simba@kingston.com", "555-1111", "2001-12-24", 3);
+
+--To see how the table has changed with this new inclusion we will start by selecting these aspects that make the values of the table clear, 
+SELECT id, first_name, last_name, buddy_id FROM students;
+
+--An aspect that is worth noting in this table, is that the included new column is now relating to another column that is present in the same table, rather than what
+we have done so far in just having two or more tables with similar values,
+
+/* self join */
+--Now for ‘SELF JOIN’ queries, if we were to ever want from this table for example, to have next to the email of the buddy, not just the ID, the email, we would need
+to join the `students` table with itself. So to find this we would want to see from our table the first name, last name, email of students, and from our 
+understanding so far the query will have to join `students` with itself, and we would then we state this would be `FROM students` and then `JOIN students`,
+SELECT first_name, last_name, email
+    FROM students
+    JOIN students;
+    
+--When testing this query out we would get an error as our result. The problem is from how we have listed out the values we would want to see, like listing out 
+`first_name` is actually an ambiguous column in this specific query. Since we are joining the query with itself (making it now two tables) that means that both of 
+these tables have the same column names. Doing what we have done so far in listing out the databse name before the table names is also not going to work since it 
+will all be under'students'.
+
+
+--This problem is solved here by distinguishing between the other in some way like an alias. So, we're going to write the alias right after the table into now 
+‘buddies,’ and since we have changed the table, we can now specify the email is coming from the table ‘buddies’ into ‘buddies.email’. We then input our `ON` 
+statement that will check that the buddy ID from the `students` table, that first one, matches the ID from the second table, `buddies`. 
+SELECT students.first_name, students.last_name, buddies.email as buddy_email
+    FROM students
+    JOIN students buddies
+    ON students.buddy_id = buddies.id;
+    
+    --This is essentially the 'SELF JOIN' statement from our understanding, and we will soon practice this more as well since the concept can be confusing. 
+
