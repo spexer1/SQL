@@ -1,0 +1,63 @@
+/** With our usual table of students up (with some added inclusions) we are going to be doing a combination of 'JOIN' and a 'SELF JOIN'. Since we are tracking 
+students and their projects, we can then create another table that would have our nonexistent students review each other's work in pairs called `project_pairs`. **/
+
+CREATE TABLE students (id INTEGER PRIMARY KEY,
+    first_name TEXT,
+    last_name TEXT,
+    email TEXT,
+    phone TEXT,
+    birthdate TEXT);
+
+INSERT INTO students (first_name, last_name, email, phone, birthdate)
+    VALUES ("Peter", "Rabbit", "peter@rabbit.com", "555-6666", "2002-06-24");
+INSERT INTO students (first_name, last_name, email, phone, birthdate)
+    VALUES ("Alice", "Wonderland", "alice@wonderland.com", "555-4444", "2002-07-04");
+INSERT INTO students (first_name, last_name, email, phone, birthdate)
+    VALUES ("Aladdin", "Lampland", "aladdin@lampland.com", "555-3333", "2001-05-10");
+INSERT INTO students (first_name, last_name, email, phone, birthdate)
+    VALUES ("Simba", "Kingston", "simba@kingston.com", "555-1111", "2001-12-24");
+    
+CREATE TABLE student_projects (id INTEGER PRIMARY KEY,
+    student_id INTEGER,
+    title TEXT);
+    
+INSERT INTO student_projects (student_id, title)
+    VALUES (1, "Carrotapault");
+INSERT INTO student_projects (student_id, title)
+    VALUES (2, "Mad Hattery");
+INSERT INTO student_projects (student_id, title)
+    VALUES (3, "Carpet Physics");
+INSERT INTO student_projects (student_id, title)
+    VALUES (4, "Hyena Habitats");
+    
+CREATE TABLE project_pairs (id INTEGER PRIMARY KEY,
+    project1_id INTEGER,
+    project2_id INTEGER);
+
+INSERT INTO project_pairs (project1_id, project2_id)
+    VALUES(1, 2);
+INSERT INTO project_pairs (project1_id, project2_id)
+    VALUES(3, 4);
+    
+--This new table will compose of two project IDs that are paired with each other, which when shown with our ‘SELECT’ query is a bunch of numbers that make computers 
+map them together easier. What we would like to see instead for us to be able to tell what is happening, is rows of project titles paired with each other. With our 
+understandings of JOINS, we can see that the keyword ‘project’ gives us an idea of the tables we need to connect. We also want to eventually see, in the results 
+table, two project titles in each row and not just one.   
+
+/* multiple joins */
+--Todo this, we will be needing to create a self join of `student_projects` with itself, so that we can get those same column values twice. We can see that when 
+computing into SQL, we can use the keyword 'JOIN' again. So `JOIN student_projects,` with the added measure of giving them different aliases (a and b), so that 
+they're not ambiguous as to what table we are referring to in our desired values. We can also make it easier to see when adding `a.title, b.title`.
+
+--Our query will also need to have an `ON` clause, two in fact. They will be for each of the joins, which will have them listed as 
+`ON project_pairs.project1.id = a.id`, and then `ON project_pairs.project2.id = b.id`.
+SELECT a.title, b.title FROM project_pairs
+    JOIN student_projects a
+    ON project_pairs.project1_id = a.id
+    JOIN student_projects b
+    ON project_pairs.project2_id = b.id;
+
+--So thanks to this combination of joins and self joins, we are now able to see a nice list of project titles paired with their project title. 
+    
+    
+    
