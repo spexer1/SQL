@@ -1,4 +1,4 @@
-#First training example prompt: To use the below grocery list and convert it into a table that includes the values of the list.
+# First training example prompt: To use the below grocery list and convert it into a table that includes the values of the list.
 
 /** Grocery list: 
 Bananas (4)
